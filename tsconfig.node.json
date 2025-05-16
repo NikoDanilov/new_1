@@ -5,16 +5,6 @@
 		"lib": ["ES2023"],
 		"module": "ESNext",
 		"skipLibCheck": true,
-		"baseUrl": "src",
-		"paths": {
-			"@app/*": ["app/*"],
-			"@entities/*": ["entities/*"],
-			"@features/*": ["features/*"],
-			"@shared/*": ["shared/*"],
-			"@pages/*": ["pages/*"],
-			"@widgets/*": ["widgets/*"]
-			// "@processes/*": ["processes/*"]
-		},
 
 		/* Bundler mode */
 		"moduleResolution": "bundler",
