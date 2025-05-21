@@ -1,3 +1,4 @@
+import { useLogin } from '@/features/auth/use-login'
 import { Button } from '@/shared/ui/kit/button'
 import {
 	Form,
@@ -11,37 +12,29 @@ import { Input } from '@/shared/ui/kit/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { useRegister } from './use-register'
 
-const schema = z
-	.object({
-		email: z
-			.string({ required_error: 'Email обязателен' })
-			.email('Неверный email'),
-		password: z
-			.string({ required_error: 'Пароль обязателен' })
-			.min(6, 'Пароль должен быть не менее 6 символов'),
-		confirmPassword: z.string().optional()
-	})
-	.refine((data) => data.password === data.confirmPassword, {
-		path: ['confirmPassword'],
-		message: 'Пароли не совпадают'
-	})
+const schema = z.object({
+	email: z
+		.string({ required_error: 'Email обязателен' })
+		.email('Неверный email'),
+	password: z
+		.string({ required_error: 'Пароль обязателен' })
+		.min(6, 'Пароль должен быть не менее 6 символов')
+})
 
-export const RegisterForm = () => {
+export const LoginForm = () => {
 	const form = useForm({
 		defaultValues: {
 			email: '',
-			password: '',
-			confirmPassword: ''
+			password: ''
 		},
 		resolver: zodResolver(schema)
 	})
 
-	const { errorMessage, isPending, register } = useRegister()
+	const { errorMessage, isPending, login } = useLogin()
 
 	const onSubmit = form.handleSubmit((data) => {
-		register(data)
+		login(data)
 	})
 
 	return (
@@ -73,25 +66,6 @@ export const RegisterForm = () => {
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>Password</FormLabel>
-							<FormControl>
-								<Input
-									placeholder="******"
-									type="password"
-									{...field}
-								/>
-							</FormControl>
-
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				<FormField
-					control={form.control}
-					name="confirmPassword"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Confirm Password</FormLabel>
 							<FormControl>
 								<Input
 									placeholder="******"

@@ -1,3 +1,4 @@
+import { useRegister } from '@/features/auth/use-register'
 import { Button } from '@/shared/ui/kit/button'
 import {
 	Form,
@@ -11,31 +12,36 @@ import { Input } from '@/shared/ui/kit/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { useLogin } from './use-login'
 
-const schema = z.object({
-	email: z
-		.string({ required_error: 'Email обязателен' })
-		.email('Неверный email'),
-	password: z
-		.string({ required_error: 'Пароль обязателен' })
-		.min(6, 'Пароль должен быть не менее 6 символов')
-})
+const schema = z
+	.object({
+		email: z
+			.string({ required_error: 'Email обязателен' })
+			.email('Неверный email'),
+		password: z
+			.string({ required_error: 'Пароль обязателен' })
+			.min(6, 'Пароль должен быть не менее 6 символов'),
+		confirmPassword: z.string().optional()
+	})
+	.refine((data) => data.password === data.confirmPassword, {
+		path: ['confirmPassword'],
+		message: 'Пароли не совпадают'
+	})
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
 	const form = useForm({
 		defaultValues: {
 			email: '',
-			password: ''
+			password: '',
+			confirmPassword: ''
 		},
 		resolver: zodResolver(schema)
 	})
 
-	const { errorMessage, isPending, login } = useLogin()
+	const { errorMessage, isPending, register } = useRegister()
 
 	const onSubmit = form.handleSubmit((data) => {
-		console.log(data)
-		login(data)
+		register(data)
 	})
 
 	return (
@@ -67,6 +73,25 @@ export const LoginForm = () => {
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>Password</FormLabel>
+							<FormControl>
+								<Input
+									placeholder="******"
+									type="password"
+									{...field}
+								/>
+							</FormControl>
+
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="confirmPassword"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Confirm Password</FormLabel>
 							<FormControl>
 								<Input
 									placeholder="******"

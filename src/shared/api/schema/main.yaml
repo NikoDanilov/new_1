@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Miro-like Collaborative Whiteboard API
-  description: API for a collaborative whiteboard application similar to Miro
+  title: Testing mock-working-server
+  description: API for a collaborative whiteboard application similar to mock-working-server
   version: 1.0.0
 
 components:
@@ -23,6 +23,24 @@ paths:
   /auth/refresh:
     post:
       $ref: './endpoints/auth.yaml#/refresh'
+
+  /machines:
+    get:
+      $ref: './endpoints/machines.yaml#/getAllMachines'
+    post:
+      $ref: './endpoints/machines.yaml#/createMachine'
+
+  /machines/{id}:
+    get:
+      $ref: './endpoints/machines.yaml#/getMachineById'
+    put:
+      $ref: './endpoints/machines.yaml#/updateMachine'
+    delete:
+      $ref: './endpoints/machines.yaml#/deleteMachine'
+
+  /machines/{id}/like:
+    patch:
+      $ref: './endpoints/machines.yaml#/toggleMachineLike'
 
   # /boards:
   #   get:

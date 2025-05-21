@@ -1,6 +1,6 @@
 import { AuthLayout } from '@/entities/auth/auth-layout'
-import { LoginForm } from '@/features/auth/login-form'
 import { ROUTES } from '@/shared/model/routes'
+import { LoginForm } from '@/widgets/auth/login-form'
 import { Link } from 'react-router-dom'
 
 function LoginPage() {
