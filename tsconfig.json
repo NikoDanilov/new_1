@@ -5,6 +5,9 @@
 		{ "path": "./tsconfig.node.json" }
 	],
 	"compilerOptions": {
+		"strict": true,
+		"skipLibCheck": false,
+		"maxNodeModuleJsDepth": 5,
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["src/*"]
