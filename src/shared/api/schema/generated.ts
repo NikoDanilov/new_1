@@ -125,6 +125,196 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/machines": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all machines */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description A list of machines */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Machine"][];
+                    };
+                };
+                401: components["responses"]["BadRequestError"];
+            };
+        };
+        put?: never;
+        /** Create a new machine */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["MachineCreate"];
+                };
+            };
+            responses: {
+                /** @description Machine created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Machine"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/machines/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a machine by ID */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Machine found */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Machine"];
+                    };
+                };
+                404: components["responses"]["BadRequestError"];
+            };
+        };
+        /** Update a machine */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["MachineUpdate"];
+                };
+            };
+            responses: {
+                /** @description Machine updated */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Machine"];
+                    };
+                };
+                401: components["responses"]["BadRequestError"];
+            };
+        };
+        post?: never;
+        /** Delete a machine */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Machine deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                404: components["responses"]["BadRequestError"];
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/machines/{id}/like": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Toggle like status for a machine */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Like status toggled */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            like?: boolean;
+                        };
+                    };
+                };
+                404: components["responses"]["BadRequestError"];
+            };
+        };
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -153,6 +343,62 @@ export interface components {
             email: string;
             /** Format: password */
             password: string;
+        };
+        Machine: {
+            /**
+             * Format: uuid
+             * @example 550e8400-e29b-41d4-a716-446655440000
+             */
+            id?: string;
+            /** @example Excavator X-2000 */
+            name: string;
+            images?: string[];
+            /**
+             * Format: float
+             * @example 25000.99
+             */
+            price: number;
+            /**
+             * Format: float
+             * @example 4.5
+             */
+            rating?: number;
+            /** @example true */
+            like?: boolean;
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        MachineCreate: {
+            /** @example Excavator X-2000 */
+            name: string;
+            images?: string[];
+            /**
+             * Format: float
+             * @example 25000.99
+             */
+            price: number;
+            /**
+             * Format: float
+             * @example 4.5
+             */
+            rating?: number;
+        };
+        MachineUpdate: {
+            /** @example Excavator X-2000 Pro */
+            name?: string;
+            images?: string[];
+            /**
+             * Format: float
+             * @example 27000.5
+             */
+            price?: number;
+            /**
+             * Format: float
+             * @example 4.7
+             */
+            rating?: number;
         };
     };
     responses: {

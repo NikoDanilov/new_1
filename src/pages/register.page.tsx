@@ -1,6 +1,6 @@
 import { AuthLayout } from '@/entities/auth/auth-layout'
-import { RegisterForm } from '@/features/auth/register-form'
 import { ROUTES } from '@/shared/model/routes'
+import { RegisterForm } from '@/widgets/auth/register-form'
 import { Link } from 'react-router-dom'
 
 function RegisterPage() {
