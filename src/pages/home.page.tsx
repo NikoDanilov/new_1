@@ -1,15 +1,27 @@
+import { AutoCard } from '@/entities/auto-card/auto-card'
+
 import { publicRqClient } from '@/shared/api/instance'
-import { ROUTES } from '@/shared/model/routes'
-import { Link } from 'react-router-dom'
+import { Button } from '@/shared/ui/kit/button'
+import { Container } from '@/shared/ui/kit/container'
+import { ListRender } from '@/shared/ui/kit/list-render'
 
 function HomePage() {
 	const { data } = publicRqClient.useQuery('get', '/machines')
 
-	console.log(data)
 	return (
-		<main className="min-h-screen flex flex-col pt-20">
-			<Link to={ROUTES.LOGIN}>tap-tap</Link>
-		</main>
+		<section className="flex pt-20">
+			<Container>
+				<ListRender
+					data={data}
+					render={(item) => (
+						<AutoCard
+							car={item}
+							actions={<Button>Delete</Button>}
+						/>
+					)}
+				/>
+			</Container>
+		</section>
 	)
 }
 
