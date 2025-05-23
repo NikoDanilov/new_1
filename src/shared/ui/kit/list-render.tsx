@@ -6,7 +6,7 @@ export const ListRender = <T,>({
 	render: (item: T) => React.ReactNode
 }): React.ReactNode => {
 	return (
-		<ul className="flex flex-wrap gap-8  w-full justify-center ">
+		<ul className="flex flex-wrap gap-8 w-full justify-between">
 			{data?.map((item) => render(item))}
 		</ul>
 	)
