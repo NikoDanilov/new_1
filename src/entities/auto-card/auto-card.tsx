@@ -18,7 +18,7 @@ export const AutoCard = ({
 	return (
 		<li
 			key={car.id}
-			className="basis-1/3"
+			className="basis-[48%]"
 		>
 			<Card>
 				<CardHeader className="flex justify-between min-h-6">
@@ -26,16 +26,19 @@ export const AutoCard = ({
 					{car.like && <Heart />}
 				</CardHeader>
 				<CardContent>
-					<div className="relative pb-80 max-w-full">
+					<div className="relative pb-[70%] max-w-full">
 						{car?.images?.map((image) => (
 							<img
 								src={image}
 								loading="lazy"
-								className="absolute top-0 left-0 right-0 bottom-0 w-full h-full"
+								className="absolute top-0 left-0 right-0 bottom-0 w-full h-full rounded-2xl"
 							/>
 						))}
 					</div>
-					<div>{car.price}</div>
+					<div className="flex flex-col gap-4">
+						<div className="text-2xl">{car.price}</div>
+						<div>{car.rating}</div>
+					</div>
 				</CardContent>
 				<CardFooter>{actions}</CardFooter>
 			</Card>
