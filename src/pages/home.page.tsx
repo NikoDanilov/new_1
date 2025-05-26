@@ -6,15 +6,19 @@ import { Container } from '@/shared/ui/kit/container'
 import { ListRender } from '@/shared/ui/kit/list-render'
 
 function HomePage() {
-	const { data } = publicRqClient.useQuery('get', '/machines')
+	const { data, isPending } = publicRqClient.useQuery('get', '/machines')
 
+	if (isPending) {
+		return <div>...Loading</div>
+	}
 	return (
-		<section className="flex pt-20">
+		<section className="flex pt-8">
 			<Container>
 				<ListRender
 					data={data}
 					render={(item) => (
 						<AutoCard
+							key={item.id}
 							car={item}
 							actions={<Button>Delete</Button>}
 						/>

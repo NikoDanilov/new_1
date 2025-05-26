@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 function RegisterPage() {
 	return (
 		<AuthLayout
-			title="Sign In"
+			title="Sign Up"
 			description="Say hello friend and come in"
 			footer={
 				<p>

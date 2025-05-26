@@ -19,7 +19,7 @@ const schema = z.object({
 		.email('Неверный email'),
 	password: z
 		.string({ required_error: 'Пароль обязателен' })
-		.min(6, 'Пароль должен быть не менее 6 символов')
+		.min(1, 'Пароль должен быть не менее 6 символов')
 })
 
 export const LoginForm = () => {
