@@ -7,15 +7,27 @@ import {
 	verifyToken
 } from '../session.ts'
 
+// const mockUsers: ApiSchemas['User'][] = [
+// 	{
+// 		id: '1',
+// 		email: 'admin@gmail.com'
+// 	}
+// ]
+
 const mockUsers: ApiSchemas['User'][] = [
 	{
 		id: '1',
-		email: 'admin@gmail.com'
+		email: 'admin@gmail.com',
+		name: 'Admin',
+		surname: 'Super',
+		image: 'https://example.com/admin.jpg',
+		createdAt: new Date().toISOString(),
+		updatedAt: new Date().toISOString()
 	}
 ]
 
 const userPasswords = new Map<string, string>()
-userPasswords.set('admin@gmail.com', '123456')
+userPasswords.set('admin@gmail.com', '1')
 
 export const authHandlers = [
 	http.post('/auth/login', async ({ request }) => {
@@ -143,6 +155,83 @@ export const authHandlers = [
 					code: 'INVALID_REFRESH_TOKEN'
 				},
 				{ status: 401 }
+			)
+		}
+	}),
+	http.get('/profile', async ({ cookies }) => {
+		const accessToken = cookies.refreshToken
+
+		if (!accessToken) {
+			return HttpResponse.json(
+				{ message: 'Требуется авторизация', code: 'UNAUTHORIZED' },
+				{ status: 401 }
+			)
+		}
+
+		try {
+			const session = await verifyToken(accessToken)
+			const user = mockUsers.find((u) => u.id === session.userId)
+
+			if (!user) {
+				throw new Error('User not found')
+			}
+
+			await delay(500) // Имитация задержки сети
+
+			return HttpResponse.json(user, { status: 200 })
+		} catch (error) {
+			return HttpResponse.json(
+				{ message: 'Недействительный токен', code: 'INVALID_TOKEN' },
+				{ status: 401 }
+			)
+		}
+	}),
+	http.patch('/profile', async ({ request, cookies }) => {
+		const accessToken = cookies.accessToken
+		const body = await request.json()
+
+		if (!accessToken) {
+			return HttpResponse.json(
+				{ message: 'Требуется авторизация', code: 'UNAUTHORIZED' },
+				{ status: 401 }
+			)
+		}
+
+		try {
+			const session = await verifyToken(accessToken)
+			const user = mockUsers.find((u) => u.id === session.userId)
+
+			if (!user) {
+				throw new Error('User not found')
+			}
+
+			// Валидация текущего пароля (если меняется email или пароль)
+			if (
+				(body.email || body.newPassword) &&
+				userPasswords.get(user.email) !== body.currentPassword
+			) {
+				return HttpResponse.json(
+					{ message: 'Неверный текущий пароль', code: 'INVALID_PASSWORD' },
+					{ status: 400 }
+				)
+			}
+
+			// Обновляем поля
+			if (body.email) user.email = body.email
+			if (body.name) user.name = body.name
+			if (body.surname) user.surname = body.surname
+			if (body.image) user.image = body.image
+			if (body.newPassword) userPasswords.set(user.email, body.newPassword)
+
+			user.updatedAt = new Date().toISOString()
+
+			await delay(800) // Имитация задержки
+
+			return HttpResponse.json(user, { status: 200 })
+		} catch (error) {
+			return HttpResponse.json(
+				{ message: 'Ошибка обновления', code: 'UPDATE_FAILED' },
+				{ status: 400 }
 			)
 		}
 	})

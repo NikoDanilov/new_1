@@ -1,4 +1,15 @@
 schemas:
+  # User:
+  #   type: object
+  #   required:
+  #     - id
+  #     - email
+  #   properties:
+  #     id:
+  #       type: string
+  #     email:
+  #       type: string
+  #       format: email
   User:
     type: object
     required:
@@ -7,9 +18,33 @@ schemas:
     properties:
       id:
         type: string
+        format: uuid
+        example: '550e8400-e29b-41d4-a716-446655440000'
       email:
         type: string
         format: email
+        example: user@example.com
+      name:
+        type: string
+        nullable: true
+        example: 'John'
+      surname:
+        type: string
+        nullable: true
+        example: 'Doe'
+      image:
+        type: string
+        format: uri
+        nullable: true
+        example: 'https://example.com/avatar.jpg'
+      createdAt:
+        type: string
+        format: date-time
+        example: '2023-01-01T00:00:00Z'
+      updatedAt:
+        type: string
+        format: date-time
+        example: '2023-01-01T00:00:00Z'
 
   LoginRequest:
     type: object
@@ -47,6 +82,39 @@ schemas:
         type: string
       user:
         $ref: '#/schemas/User'
+
+  UpdateProfileRequest:
+    type: object
+    properties:
+      email:
+        type: string
+        format: email
+        nullable: true
+        example: new-email@example.com
+      name:
+        type: string
+        nullable: true
+        example: 'Alex'
+      surname:
+        type: string
+        nullable: true
+        example: 'Smith'
+      image:
+        type: string
+        format: uri
+        nullable: true
+        example: 'https://example.com/new-avatar.jpg'
+      currentPassword:
+        type: string
+        format: password
+        description: Required if changing email or password
+        example: 'oldPassword123'
+      newPassword:
+        type: string
+        format: password
+        minLength: 8
+        nullable: true
+        example: 'newPassword456'
 
 login:
   summary: Login user
@@ -98,5 +166,37 @@ refresh:
         application/json:
           schema:
             $ref: '#/schemas/AuthResponse'
+    '401':
+      $ref: '../shared/responses.yaml#/UnauthorizedError'
+
+getProfile:
+  summary: Get current user profile
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/schemas/User'
+    '401':
+      $ref: '../shared/responses.yaml#/UnauthorizedError'
+
+patchProfile:
+  summary: Update profile
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/schemas/UpdateProfileRequest'
+  responses:
+    '200':
+      description: Updated
+      content:
+        application/json:
+          schema:
+            $ref: '#/schemas/User'
+    '400':
+      $ref: '../shared/responses.yaml#/BadRequestError'
     '401':
       $ref: '../shared/responses.yaml#/UnauthorizedError'

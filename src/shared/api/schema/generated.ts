@@ -125,6 +125,69 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get current user profile */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["User"];
+                    };
+                };
+                401: components["responses"]["UnauthorizedError"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update profile */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UpdateProfileRequest"];
+                };
+            };
+            responses: {
+                /** @description Updated */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["User"];
+                    };
+                };
+                400: components["responses"]["BadRequestError"];
+                401: components["responses"]["UnauthorizedError"];
+            };
+        };
+        trace?: never;
+    };
     "/machines": {
         parameters: {
             query?: never;
@@ -326,9 +389,35 @@ export interface components {
             password: string;
         };
         User: {
+            /**
+             * Format: uuid
+             * @example 550e8400-e29b-41d4-a716-446655440000
+             */
             id: string;
-            /** Format: email */
+            /**
+             * Format: email
+             * @example user@example.com
+             */
             email: string;
+            /** @example John */
+            name?: string | null;
+            /** @example Doe */
+            surname?: string | null;
+            /**
+             * Format: uri
+             * @example https://example.com/avatar.jpg
+             */
+            image?: string | null;
+            /**
+             * Format: date-time
+             * @example 2023-01-01T00:00:00Z
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @example 2023-01-01T00:00:00Z
+             */
+            updatedAt?: string;
         };
         AuthResponse: {
             accessToken: string;
@@ -343,6 +432,33 @@ export interface components {
             email: string;
             /** Format: password */
             password: string;
+        };
+        UpdateProfileRequest: {
+            /**
+             * Format: email
+             * @example new-email@example.com
+             */
+            email?: string | null;
+            /** @example Alex */
+            name?: string | null;
+            /** @example Smith */
+            surname?: string | null;
+            /**
+             * Format: uri
+             * @example https://example.com/new-avatar.jpg
+             */
+            image?: string | null;
+            /**
+             * Format: password
+             * @description Required if changing email or password
+             * @example oldPassword123
+             */
+            currentPassword?: string;
+            /**
+             * Format: password
+             * @example newPassword456
+             */
+            newPassword?: string | null;
         };
         Machine: {
             /**

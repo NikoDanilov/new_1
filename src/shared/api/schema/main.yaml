@@ -24,6 +24,12 @@ paths:
     post:
       $ref: './endpoints/auth.yaml#/refresh'
 
+  /profile:
+    get:
+      $ref: './endpoints/auth.yaml#/getProfile'
+    patch:
+      $ref: './endpoints/auth.yaml#/patchProfile'
+
   /machines:
     get:
       $ref: './endpoints/machines.yaml#/getAllMachines'
