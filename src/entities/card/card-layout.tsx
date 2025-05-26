@@ -1,3 +1,4 @@
+import { cn } from '@/shared/lib/css'
 import {
 	Card,
 	CardContent,
@@ -7,20 +8,22 @@ import {
 	CardTitle
 } from '@/shared/ui/kit/card'
 
-export const AuthLayout = ({
+export const CardLayout = ({
 	title,
 	description,
 	form,
-	footer
+	footer,
+	className
 }: {
 	title: React.ReactNode
 	description?: React.ReactNode
 	form?: React.ReactNode
 	footer?: React.ReactNode
+	className?: string
 }) => {
 	return (
 		<div className="flex w-full min-h-screen justify-center items-center">
-			<Card className="w-full max-w-[400px]">
+			<Card className={cn('w-full', className)}>
 				<CardHeader>
 					<CardTitle>{title}</CardTitle>
 					<CardDescription>{description}</CardDescription>
