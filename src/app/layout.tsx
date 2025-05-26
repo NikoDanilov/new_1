@@ -4,7 +4,7 @@ export const LayoutApp = ({
 	header,
 	main
 }: {
-	header: React.ReactNode
+	header?: React.ReactNode
 	main: React.ReactNode
 }) => {
 	return (

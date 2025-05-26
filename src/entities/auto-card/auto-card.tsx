@@ -16,10 +16,7 @@ export const AutoCard = ({
 	actions: React.ReactNode
 }) => {
 	return (
-		<li
-			key={car.id}
-			className="basis-[48%]"
-		>
+		<li className="basis-[48%]">
 			<Card>
 				<CardHeader className="flex justify-between min-h-6">
 					<CardTitle>{car.name}</CardTitle>
@@ -29,6 +26,7 @@ export const AutoCard = ({
 					<div className="relative pb-[70%] max-w-full">
 						{car?.images?.map((image) => (
 							<img
+								key={image}
 								src={image}
 								loading="lazy"
 								className="absolute top-0 left-0 right-0 bottom-0 w-full h-full rounded-2xl"
