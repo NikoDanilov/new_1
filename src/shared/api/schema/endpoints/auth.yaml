@@ -104,17 +104,9 @@ schemas:
         format: uri
         nullable: true
         example: 'https://example.com/new-avatar.jpg'
-      currentPassword:
+      password:
         type: string
         format: password
-        description: Required if changing email or password
-        example: 'oldPassword123'
-      newPassword:
-        type: string
-        format: password
-        minLength: 8
-        nullable: true
-        example: 'newPassword456'
 
 login:
   summary: Login user
@@ -183,6 +175,16 @@ getProfile:
 
 patchProfile:
   summary: Update profile
+  required:
+    - email
+    - password
+  properties:
+    email:
+      type: string
+      format: email
+    password:
+      type: string
+      format: password
   requestBody:
     required: true
     content:

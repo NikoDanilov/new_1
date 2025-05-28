@@ -6,7 +6,6 @@ import { LayoutApp } from './layout'
 import { ProtectedComponents } from './protected-route'
 
 export const App = () => {
-	console.log('render')
 	return (
 		<LayoutApp
 			header={

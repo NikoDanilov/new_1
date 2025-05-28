@@ -10,45 +10,69 @@ import {
 } from '@/shared/ui/kit/form'
 import { Input } from '@/shared/ui/kit/input'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 const schema = z.object({
-	email: z
-		.string({ required_error: 'Email обязателен' })
-		.email('Неверный email'),
 	name: z
 		.string({ required_error: 'Name обязателен' })
 		.min(1, 'Имя обязательно'),
 	surname: z
 		.string({ required_error: 'Surname обязателен' })
 		.min(1, 'Фамилия обязательна'),
-	image: z
-		.instanceof(File, { message: 'Требуется загрузить изображение' })
-		.optional()
+	// image: z.string().url().optional()
+	image: z.union([z.instanceof(File), z.string().url(), z.null()]).optional()
 })
 
 export const ProfileForm = () => {
+	const { data, refetch } = publicRqClient.useQuery('get', '/profile')
+	const FormMutate = publicRqClient.useMutation('patch', '/profile')
+
 	const form = useForm({
 		resolver: zodResolver(schema)
 	})
 
-	const { isSuccess, data } = publicRqClient.useQuery('get', '/profile')
+	// INFO: жертвуем onSuccess так как его нету
+	// FIXME: избегать useEffect/useLayoutEffect
 
-	useEffect(() => {
-		if (isSuccess) {
+	useLayoutEffect(() => {
+		if (data) {
 			form.reset({
 				name: data.name || '',
-				email: data.email,
-				surname: data.surname || ''
+				surname: data.surname || '',
+				image: data.image || null
 			})
 		}
-	}, [isSuccess, data, form.reset])
+	}, [data, form])
 
-	const onSubmit = form.handleSubmit((data) => {
-		console.log(data)
+	const onSubmit = form.handleSubmit(async (data) => {
+		const jsonData = {
+			name: data.name,
+			surname: data.surname,
+			image:
+				data.image instanceof File
+					? await convertFileToBase64(data.image)
+					: data.image
+		}
+
+		FormMutate.mutate({ body: jsonData })
+		refetch()
 	})
+
+	// Вспомогательная функция
+	const convertFileToBase64 = (file: File): Promise<string> => {
+		return new Promise((resolve) => {
+			const reader = new FileReader()
+			reader.readAsDataURL(file)
+			reader.onload = () => resolve(reader.result as string)
+		})
+	}
+
+	const getPreviewUrl = (file: File | string | null | undefined) => {
+		if (!file) return undefined
+		return typeof file === 'string' ? file : URL.createObjectURL(file)
+	}
 
 	return (
 		<Form {...form}>
@@ -56,23 +80,6 @@ export const ProfileForm = () => {
 				onSubmit={onSubmit}
 				className="flex flex-col gap-4"
 			>
-				<FormField
-					control={form.control}
-					name="email"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Email</FormLabel>
-							<FormControl>
-								<Input
-									placeholder="bestform@mail.ru"
-									{...field}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
 				<FormField
 					control={form.control}
 					name="name"
@@ -110,7 +117,7 @@ export const ProfileForm = () => {
 				<FormField
 					control={form.control}
 					name="image"
-					render={({ field: { onChange } }) => (
+					render={({ field: { onChange, value } }) => (
 						<FormItem>
 							<FormLabel>Avatar</FormLabel>
 							<FormControl>
@@ -118,11 +125,20 @@ export const ProfileForm = () => {
 									placeholder="avatar"
 									accept="image/*"
 									onChange={(e) => {
-										onChange(e.target.files?.[0])
+										onChange(e.target.files?.[0] || null)
 									}}
 									type="file"
 								/>
 							</FormControl>
+							{value && (
+								<div className="mt-2">
+									<img
+										src={getPreviewUrl(value)}
+										alt="Current avatar"
+										className="h-20 w-20 rounded-full"
+									/>
+								</div>
+							)}
 							<FormMessage />
 						</FormItem>
 					)}
