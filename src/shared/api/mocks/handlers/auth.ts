@@ -20,7 +20,8 @@ const mockUsers: ApiSchemas['User'][] = [
 		email: 'admin@gmail.com',
 		name: 'Admin',
 		surname: 'Super',
-		image: 'https://example.com/admin.jpg',
+		image:
+			'https://i.pinimg.com/736x/71/81/14/7181149979b9cc345415d3b6465b192b.jpg',
 		createdAt: new Date().toISOString(),
 		updatedAt: new Date().toISOString()
 	}
@@ -34,7 +35,10 @@ export const authHandlers = [
 		const body = await request.json()
 
 		const user = mockUsers.find((u) => u.email === body.email)
+
+		// console.log(mockUsers, 'login', userPasswords)
 		const storedPassword = userPasswords.get(body.email)
+		// console.log(storedPassword, 'str')
 
 		await delay()
 
@@ -187,7 +191,7 @@ export const authHandlers = [
 		}
 	}),
 	http.patch('/profile', async ({ request, cookies }) => {
-		const accessToken = cookies.accessToken
+		const accessToken = cookies.refreshToken
 		const body = await request.json()
 
 		if (!accessToken) {
@@ -206,27 +210,30 @@ export const authHandlers = [
 			}
 
 			// Валидация текущего пароля (если меняется email или пароль)
-			if (
-				(body.email || body.newPassword) &&
-				userPasswords.get(user.email) !== body.currentPassword
-			) {
-				return HttpResponse.json(
-					{ message: 'Неверный текущий пароль', code: 'INVALID_PASSWORD' },
-					{ status: 400 }
-				)
-			}
+			// if (
+			// 	(body.email || body.newPassword) &&
+			// 	userPasswords.get(user.email) !== body.currentPassword
+			// ) {
+			// 	return HttpResponse.json(
+			// 		{ message: 'Неверный текущий пароль', code: 'INVALID_PASSWORD' },
+			// 		{ status: 400 }
+			// 	)
+			// }
 
 			// Обновляем поля
 			if (body.email) user.email = body.email
 			if (body.name) user.name = body.name
 			if (body.surname) user.surname = body.surname
+			// if (body.image) user.image = body.image
+			// if (body.newPassword) userPasswords.set(user.email, body.newPassword)
+			console.log(body.image, user.image)
 			if (body.image) user.image = body.image
-			if (body.newPassword) userPasswords.set(user.email, body.newPassword)
 
 			user.updatedAt = new Date().toISOString()
 
 			await delay(800) // Имитация задержки
 
+			console.log(mockUsers)
 			return HttpResponse.json(user, { status: 200 })
 		} catch (error) {
 			return HttpResponse.json(

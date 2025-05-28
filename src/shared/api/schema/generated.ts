@@ -448,17 +448,8 @@ export interface components {
              * @example https://example.com/new-avatar.jpg
              */
             image?: string | null;
-            /**
-             * Format: password
-             * @description Required if changing email or password
-             * @example oldPassword123
-             */
-            currentPassword?: string;
-            /**
-             * Format: password
-             * @example newPassword456
-             */
-            newPassword?: string | null;
+            /** Format: password */
+            password?: string;
         };
         Machine: {
             /**
