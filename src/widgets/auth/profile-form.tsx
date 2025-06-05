@@ -1,4 +1,6 @@
-import { publicRqClient } from '@/shared/api/instance'
+import { useSettingsGet } from '@/features/settings/use-settings-get'
+import { useSettingsUpdate } from '@/features/settings/use-settings-update'
+import { convertFileToBase64, getPreviewUrl } from '@/shared/model/image'
 import { Button } from '@/shared/ui/kit/button'
 import {
 	Form,
@@ -10,7 +12,6 @@ import {
 } from '@/shared/ui/kit/form'
 import { Input } from '@/shared/ui/kit/input'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useLayoutEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -21,30 +22,21 @@ const schema = z.object({
 	surname: z
 		.string({ required_error: 'Surname обязателен' })
 		.min(1, 'Фамилия обязательна'),
-	// image: z.string().url().optional()
 	image: z.union([z.instanceof(File), z.string().url(), z.null()]).optional()
 })
 
 export const ProfileForm = () => {
-	const { data, refetch } = publicRqClient.useQuery('get', '/profile')
-	const FormMutate = publicRqClient.useMutation('patch', '/profile')
+	const { data: profileData } = useSettingsGet()
+	const { update, settingsForm } = useSettingsUpdate()
 
 	const form = useForm({
-		resolver: zodResolver(schema)
-	})
-
-	// INFO: жертвуем onSuccess так как его нету
-	// FIXME: избегать useEffect/useLayoutEffect
-
-	useLayoutEffect(() => {
-		if (data) {
-			form.reset({
-				name: data.name || '',
-				surname: data.surname || '',
-				image: data.image || null
-			})
+		resolver: zodResolver(schema),
+		defaultValues: {
+			name: profileData?.name || '',
+			surname: profileData?.surname || '',
+			image: profileData?.image || null
 		}
-	}, [data, form])
+	})
 
 	const onSubmit = form.handleSubmit(async (data) => {
 		const jsonData = {
@@ -52,27 +44,11 @@ export const ProfileForm = () => {
 			surname: data.surname,
 			image:
 				data.image instanceof File
-					? await convertFileToBase64(data.image)
+					? await convertFileToBase64(data.image).catch(() => null)
 					: data.image
 		}
-
-		FormMutate.mutate({ body: jsonData })
-		refetch()
+		update(jsonData)
 	})
-
-	// Вспомогательная функция
-	const convertFileToBase64 = (file: File): Promise<string> => {
-		return new Promise((resolve) => {
-			const reader = new FileReader()
-			reader.readAsDataURL(file)
-			reader.onload = () => resolve(reader.result as string)
-		})
-	}
-
-	const getPreviewUrl = (file: File | string | null | undefined) => {
-		if (!file) return undefined
-		return typeof file === 'string' ? file : URL.createObjectURL(file)
-	}
 
 	return (
 		<Form {...form}>
@@ -144,7 +120,12 @@ export const ProfileForm = () => {
 					)}
 				/>
 
-				<Button type="submit">Save</Button>
+				<Button
+					disabled={settingsForm.isPending}
+					type="submit"
+				>
+					Save
+				</Button>
 			</form>
 		</Form>
 	)
