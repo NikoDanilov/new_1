@@ -198,7 +198,22 @@ export interface paths {
         /** Get all machines */
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    /** @description Page number */
+                    page?: number;
+                    /** @description Items per page */
+                    limit?: number;
+                    /** @description Sort field (name, price, rating) */
+                    sort?: "name" | "price" | "rating" | "createdAt";
+                    /** @description Sort order */
+                    order?: "asc" | "desc";
+                    /** @description Minimum price filter */
+                    minPrice?: number;
+                    /** @description Maximum price filter */
+                    maxPrice?: number;
+                    /** @description Search term in name */
+                    search?: string;
+                };
                 header?: never;
                 path?: never;
                 cookie?: never;
@@ -211,7 +226,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Machine"][];
+                        "application/json": components["schemas"]["MachineList"];
                     };
                 };
                 401: components["responses"]["BadRequestError"];
@@ -476,6 +491,11 @@ export interface components {
             createdAt?: string;
             /** Format: date-time */
             updatedAt?: string;
+        };
+        MachineList: {
+            list: components["schemas"]["Machine"][];
+            total: number;
+            totalPages: number;
         };
         MachineCreate: {
             /** @example Excavator X-2000 */

@@ -569,9 +569,24 @@ const mockMachines: ApiSchemas['Machine'][] = [
 ]
 
 export const machinesHandlers = [
-	http.get('/machines', async () => {
+	http.get('/machines', async ({ request }) => {
+		const url = new URL(request.url)
+		const limit = Number(url.searchParams.get('limit')) || 4
+		const page = Number(url.searchParams.get('page')) || 1
+
+		const total = mockMachines.length
+		const totalPages = Math.ceil(total / limit)
+		const startIndex = (page - 1) * limit
+		const endIndex = startIndex + limit
+
+		const paginatedMachines = mockMachines.slice(startIndex, endIndex)
+
 		await delay(300)
-		return HttpResponse.json(mockMachines)
+		return HttpResponse.json({
+			list: paginatedMachines,
+			total,
+			totalPages
+		})
 	}),
 
 	http.get('/machines/{id}', async ({ params }) => {

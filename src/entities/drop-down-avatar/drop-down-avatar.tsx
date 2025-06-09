@@ -1,4 +1,5 @@
 import { publicRqClient } from '@/shared/api/instance'
+import { getPreviewUrl } from '@/shared/model/image'
 import { ROUTES } from '@/shared/model/routes'
 import { useSession } from '@/shared/model/session'
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/kit/avatar'
@@ -18,15 +19,10 @@ export const DropDownAvatar = () => {
 
 	const { logout } = useSession()
 
-	const getPreviewUrl = (file: File | string | null | undefined) => {
-		if (!file) return undefined
-		return typeof file === 'string' ? file : URL.createObjectURL(file)
-	}
-
 	if (!user) {
 		return null
 	}
-	// TODO: Добавить img к профилю
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -46,7 +42,7 @@ export const DropDownAvatar = () => {
 						})}
 						className="w-full"
 					>
-						<DropdownMenuItem> Settings</DropdownMenuItem>
+						<DropdownMenuItem>Settings</DropdownMenuItem>
 					</Link>
 					<DropdownMenuItem onClick={() => logout()}>Log out</DropdownMenuItem>
 				</DropdownMenuGroup>
