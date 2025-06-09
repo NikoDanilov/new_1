@@ -2,7 +2,7 @@ import { publicRqClient } from '@/shared/api/instance'
 import type { ApiSchemas } from '@/shared/api/schema'
 import { useQueryClient } from '@tanstack/react-query'
 
-export const useSettingsUpdate = () => {
+export const useUpdateSettings = () => {
 	const settingsForm = publicRqClient.useMutation('patch', '/profile')
 
 	const queryClient = useQueryClient()

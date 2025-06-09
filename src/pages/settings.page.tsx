@@ -1,5 +1,5 @@
 import { CardLayout } from '@/entities/card'
-import { ProfileForm } from '@/widgets/auth/profile-form'
+import { SettingsForm } from '@/widgets/settings/settings-form'
 
 function SettingsPage() {
 	return (
@@ -7,7 +7,7 @@ function SettingsPage() {
 			title="Profile"
 			description="Settings this profile"
 			className="max-w-[800px]"
-			form={<ProfileForm />}
+			form={<SettingsForm />}
 		/>
 	)
 }

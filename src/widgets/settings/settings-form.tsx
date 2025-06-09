@@ -1,5 +1,5 @@
-import { useSettingsGet } from '@/features/settings/use-settings-get'
-import { useSettingsUpdate } from '@/features/settings/use-settings-update'
+import { useGetSettings } from '@/features/settings/use-get-settings'
+import { useUpdateSettings } from '@/features/settings/use-update-settings'
 import { convertFileToBase64, getPreviewUrl } from '@/shared/model/image'
 import { Button } from '@/shared/ui/kit/button'
 import {
@@ -25,16 +25,19 @@ const schema = z.object({
 	image: z.union([z.instanceof(File), z.string().url(), z.null()]).optional()
 })
 
-export const ProfileForm = () => {
-	const { data: profileData } = useSettingsGet()
-	const { update, settingsForm } = useSettingsUpdate()
+export const SettingsForm = () => {
+	const profileData = useGetSettings()
+	const { update, settingsForm } = useUpdateSettings()
 
 	const form = useForm({
 		resolver: zodResolver(schema),
-		defaultValues: {
-			name: profileData?.name || '',
-			surname: profileData?.surname || '',
-			image: profileData?.image || null
+		values: {
+			name: profileData.data?.name || '',
+			surname: profileData.data?.surname || '',
+			image: profileData.data?.image || ''
+		},
+		resetOptions: {
+			keepDirtyValues: true
 		}
 	})
 
