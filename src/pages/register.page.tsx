@@ -1,6 +1,7 @@
 import { CardLayout } from '@/entities/card/card-layout'
 import { ROUTES } from '@/shared/model/routes'
-import { RegisterForm } from '@/widgets/auth/register-form'
+import { RegisterForm } from '@/widgets/auth'
+
 import { Link } from 'react-router-dom'
 
 function RegisterPage() {

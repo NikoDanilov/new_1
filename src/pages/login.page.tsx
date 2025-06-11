@@ -1,6 +1,7 @@
 import { CardLayout } from '@/entities/card/card-layout'
 import { ROUTES } from '@/shared/model/routes'
-import { LoginForm } from '@/widgets/auth/login-form'
+import { LoginForm } from '@/widgets/auth'
+
 import { Link } from 'react-router-dom'
 
 function LoginPage() {

@@ -32,8 +32,6 @@ export function ProtectedComponents({
 }) {
 	const { session } = useSession()
 
-	console.log('render ProtectedComponents')
-
 	if (!session) {
 		return null
 	}
