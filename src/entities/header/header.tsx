@@ -8,11 +8,13 @@ export const Header = ({
 	avatar: React.ReactNode
 }) => {
 	return (
-		<header className="sticky top-0 left-0 right-0 bg-white z-10 flex h-16 items-center shadow-lg/10">
-			<div className="flex items-center justify-between  max-w-[1600px] w-full mx-auto px-4">
+		<header className="sticky top-0 left-0 right-0 z-30 bg-white  flex flex-col h-16 items-center shadow-lg/10">
+			<div className="flex items-center justify-between max-w-[1600px] w-full mx-auto px-4">
 				{logo}
-				{actions}
-				{avatar}
+				<div className="flex items-center gap-4">
+					{actions}
+					{avatar}
+				</div>
 			</div>
 		</header>
 	)

@@ -573,13 +573,19 @@ export const machinesHandlers = [
 		const url = new URL(request.url)
 		const limit = Number(url.searchParams.get('limit')) || 4
 		const page = Number(url.searchParams.get('page')) || 1
+		const minPrice = Number(url.searchParams.get('minPrice')) || 0
+		const maxPrice = Number(url.searchParams.get('maxPrice')) || 10000000
 
 		const total = mockMachines.length
 		const totalPages = Math.ceil(total / limit)
 		const startIndex = (page - 1) * limit
 		const endIndex = startIndex + limit
 
-		const paginatedMachines = mockMachines.slice(startIndex, endIndex)
+		const data = mockMachines.filter(
+			(item) => item.price >= minPrice && item.price < maxPrice
+		)
+
+		const paginatedMachines = data.slice(startIndex, endIndex)
 
 		await delay(300)
 		return HttpResponse.json({

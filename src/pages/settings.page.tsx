@@ -1,5 +1,5 @@
 import { CardLayout } from '@/entities/card'
-import { SettingsForm } from '@/widgets/settings/settings-form'
+import { SettingsForm } from '@/widgets/settings'
 
 function SettingsPage() {
 	return (

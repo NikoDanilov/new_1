@@ -1,4 +1,4 @@
-import { useRegister } from '@/features/auth/use-register'
+import { useRegister } from '@/features/auth'
 import { Button } from '@/shared/ui/kit/button'
 import {
 	Form,
