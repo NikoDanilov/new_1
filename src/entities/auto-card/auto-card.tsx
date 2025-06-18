@@ -8,6 +8,7 @@ import {
 } from '@/shared/ui/kit/card'
 import { Heart } from 'lucide-react'
 
+// INFO: по возможности сделать более общим c названием Card
 export const AutoCard = ({
 	car,
 	actions

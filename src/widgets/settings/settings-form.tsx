@@ -1,5 +1,5 @@
-import { useGetSettings } from '@/features/settings/use-get-settings'
-import { useUpdateSettings } from '@/features/settings/use-update-settings'
+import { useGetSettings } from '@/features/settings/use-get'
+import { useUpdateSettings } from '@/features/settings/use-update'
 import { convertFileToBase64, getPreviewUrl } from '@/shared/model/image'
 import { Button } from '@/shared/ui/kit/button'
 import {

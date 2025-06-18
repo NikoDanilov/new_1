@@ -8,7 +8,7 @@ import {
 	CardTitle
 } from '@/shared/ui/kit/card'
 
-export const CardLayout = ({
+export const AuthLayout = ({
 	title,
 	description,
 	form,
