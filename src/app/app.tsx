@@ -1,20 +1,27 @@
-import { DropDownAvatar } from '@/entities/drop-down-avatar/drop-down-avatar'
-
+import { DropDownAvatar } from '@/entities/drop-down-avatar'
 import { Header } from '@/entities/header'
 import { Search } from '@/entities/search'
-import { searchMediator } from '@/shared/lib/mediator'
+import { searchMediator } from '@/entities/search/mediator'
 import { ROUTES } from '@/shared/model/routes'
 import { Button } from '@/shared/ui/kit/button'
 import { Logo } from '@/shared/ui/kit/logo'
-import { SearchForm } from '@/widgets/search'
+import { lazy, Suspense, type ComponentType } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { LayoutApp } from './layout'
 import { ProtectedComponents } from './protected-route'
 
+const SearchForm = lazy(() =>
+	import('@/widgets/search').then((module) => ({
+		default: module.SearchForm as ComponentType<{
+			mediator: typeof searchMediator
+		}>
+	}))
+)
+
 export const App = () => {
 	// TODO: переделать
-	const location = useLocation()
-	const isHomePage = location.pathname === ROUTES.HOME
+	const { pathname } = useLocation()
+	const isHomePage = pathname === ROUTES.HOME
 
 	return (
 		<LayoutApp
@@ -30,7 +37,13 @@ export const App = () => {
 			search={
 				<ProtectedComponents>
 					{isHomePage && (
-						<Search searchForm={<SearchForm mediator={searchMediator} />} />
+						<Search
+							searchForm={
+								<Suspense fallback={null}>
+									<SearchForm mediator={searchMediator} />
+								</Suspense>
+							}
+						/>
 					)}
 				</ProtectedComponents>
 			}

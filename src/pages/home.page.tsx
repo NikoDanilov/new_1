@@ -1,6 +1,6 @@
 import { AutoCard } from '@/entities/auto-card'
+import { searchMediator } from '@/entities/search/mediator'
 import { useGetCars } from '@/features/home'
-import { searchMediator } from '@/shared/lib/mediator'
 import { Button } from '@/shared/ui/kit/button'
 import { Container } from '@/shared/ui/kit/container'
 import { ListRender } from '@/shared/ui/kit/list-render'

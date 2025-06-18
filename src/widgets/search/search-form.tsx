@@ -1,4 +1,4 @@
-import type { ISearchMediator } from '@/shared/lib/mediator'
+import type { ISearchMediator } from '@/entities/search/mediator'
 import { Button } from '@/shared/ui/kit/button'
 import {
 	Form,
@@ -28,10 +28,11 @@ export const SearchForm = ({ mediator }: { mediator: ISearchMediator }) => {
 	})
 
 	const onSubmit = form.handleSubmit((data) => {
-		mediator.publish({
-			priceAfter: data.priceAfter,
-			priceBefore: data.priceBefore
-		})
+		mediator &&
+			mediator.publish({
+				priceAfter: data.priceAfter,
+				priceBefore: data.priceBefore
+			})
 	})
 
 	return (

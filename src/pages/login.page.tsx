@@ -1,4 +1,4 @@
-import { CardLayout } from '@/entities/card/card-layout'
+import { CardLayout } from '@/entities/auth/auth-layout'
 import { ROUTES } from '@/shared/model/routes'
 import { LoginForm } from '@/widgets/auth'
 

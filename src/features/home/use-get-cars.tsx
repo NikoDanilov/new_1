@@ -1,5 +1,5 @@
+import type { FilterParams, ISearchMediator } from '@/entities/search/mediator'
 import { rqClient } from '@/shared/api/instance'
-import type { FilterParams, ISearchMediator } from '@/shared/lib/mediator'
 import { keepPreviousData } from '@tanstack/react-query'
 import { useCallback, useEffect, useState, type RefCallback } from 'react'
 
@@ -11,10 +11,12 @@ export const useGetCars = ({ mediator }: UseGetCarsOptions) => {
 	const [filters, setFilters] = useState<FilterParams>({})
 
 	useEffect(() => {
-		const unsubscribe = mediator.subscribe((params) => {
-			setFilters(params)
-		})
-		return unsubscribe
+		if (mediator) {
+			const unsubscribe = mediator.subscribe((params) => {
+				setFilters(params)
+			})
+			return unsubscribe
+		}
 	}, [])
 
 	const infiniteCar = rqClient.useInfiniteQuery(

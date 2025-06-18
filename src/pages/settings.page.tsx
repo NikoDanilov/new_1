@@ -1,4 +1,4 @@
-import { CardLayout } from '@/entities/card'
+import { CardLayout } from '@/entities/auth'
 import { SettingsForm } from '@/widgets/settings'
 
 function SettingsPage() {
