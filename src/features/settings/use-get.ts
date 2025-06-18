@@ -1,4 +1,4 @@
-import { publicRqClient } from '@/shared/api/instance'
+import { rqClient } from '@/shared/api/instance'
 
 export const useGetSettings = () => {
 	// const { data } = useQuery({
@@ -6,7 +6,7 @@ export const useGetSettings = () => {
 	// 	queryFn: () => publicRqClient.useQuery('get', '/profile')
 	// })
 
-	const { data } = publicRqClient.useQuery('get', '/profile')
+	const { data } = rqClient.useQuery('get', '/profile')
 
 	return { data }
 }

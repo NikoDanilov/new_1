@@ -1,4 +1,4 @@
-import { CardLayout } from '@/entities/auth/auth-layout'
+import { AuthLayout } from '@/entities/auth'
 import { ROUTES } from '@/shared/model/routes'
 import { LoginForm } from '@/widgets/auth'
 
@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 function LoginPage() {
 	return (
-		<CardLayout
+		<AuthLayout
 			title="Sign In"
 			description="Say hello friend and come in"
 			className="max-w-[400px]"

@@ -1,6 +1,5 @@
 import type { FilterParams, ISearchMediator } from '@/entities/search/mediator'
 import { rqClient } from '@/shared/api/instance'
-import { keepPreviousData } from '@tanstack/react-query'
 import { useCallback, useEffect, useState, type RefCallback } from 'react'
 
 interface UseGetCarsOptions {
@@ -39,7 +38,7 @@ export const useGetCars = ({ mediator }: UseGetCarsOptions) => {
 				Number(lastPageParams) < lastPage.totalPages
 					? Number(lastPageParams) + 1
 					: null,
-			isPlaceholderData: keepPreviousData,
+			// placeholderData: keepPreviousData,
 			select: (result) => result.pages.map((page) => page.list).flat()
 		}
 	)
