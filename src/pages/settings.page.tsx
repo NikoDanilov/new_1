@@ -1,9 +1,9 @@
-import { CardLayout } from '@/entities/auth'
+import { AuthLayout } from '@/entities/auth'
 import { SettingsForm } from '@/widgets/settings'
 
 function SettingsPage() {
 	return (
-		<CardLayout
+		<AuthLayout
 			title="Profile"
 			description="Settings this profile"
 			className="max-w-[800px]"

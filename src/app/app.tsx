@@ -1,5 +1,6 @@
 import { DropDownAvatar } from '@/entities/drop-down-avatar'
 import { Header } from '@/entities/header'
+import { Modal } from '@/entities/modal'
 import { Search } from '@/entities/search'
 import { searchMediator } from '@/entities/search/mediator'
 import { ROUTES } from '@/shared/model/routes'
@@ -30,7 +31,13 @@ export const App = () => {
 					<Header
 						logo={<Logo />}
 						avatar={<DropDownAvatar />}
-						actions={<Button>Add Car</Button>}
+						actions={
+							<Modal
+								trigger={<Button>Add Car</Button>}
+								content={<div />}
+								title={'Adding cars'}
+							/>
+						}
 					/>
 				</ProtectedComponents>
 			}
